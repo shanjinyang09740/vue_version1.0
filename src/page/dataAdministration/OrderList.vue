@@ -3,10 +3,10 @@
    
     <div class="table_container">
       <el-table
-        :data="tableData"
+        :data="tableDataArr"
         @expand="expand"
-        :expand-row-keys="expendRow"
         :row-key="row => row.index"
+        :expand-row-keys="expendRow"
         style="width: 100%"
       >
         <el-table-column type="expand">
@@ -39,7 +39,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-size="20"
+          :page-size="pageSize"
           layout="total, prev, pager, next"
           :total="count"
         >
@@ -64,6 +64,8 @@ export default {
       offset: 0,
       limit: 20,
       count: 0,
+      pageSize: 10,
+      tableDataArr: [],
       currentPage: 1,
       restaurant_id: null,
       expendRow: []
@@ -94,11 +96,13 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.offset = (val - 1) * this.limit;
+      this.offset = (val - 1) * this.pageSize;
       this.getOrders();
     },
     async getOrders() {
+      const $this = this;
       const Orders = await reqOrderList();
+      this.tableDataArr = [];
       this.tableData = [];
       Orders.data.forEach((item, index) => {
         const tableData = {};
@@ -111,6 +115,13 @@ export default {
         tableData.index = index;
         this.tableData.push(tableData);
       });
+      this.count = this.tableData.length;
+        //根据当前页码截取相应数据
+        this.tableData.forEach((item, index) => {
+          if((index > $this.offset || index == $this.offset) && (index < ($this.offset + $this.pageSize))){
+            $this.tableDataArr.push(item);
+          }
+        });
     },
     async expand(row, status) {
       if (status) {

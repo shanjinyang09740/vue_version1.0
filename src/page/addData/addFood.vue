@@ -521,7 +521,5 @@ export default {
   height: 120px;
   display: block;
 }
-.cell {
-  text-align: center;
-}
+
 </style>

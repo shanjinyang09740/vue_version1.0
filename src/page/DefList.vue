@@ -1,6 +1,10 @@
 <template>
   <div>
     <h1>数据统计</h1>
+    <el-button>
+      <router-link to="/lytzone">路由跳转</router-link>   
+    </el-button>
+    <br>
     <div class="tags">
       <el-tag effect="dark">
         <b>当日数据：</b>

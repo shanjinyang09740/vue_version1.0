@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <el-container style="height: 950px; border: 1px solid #eee">
+  <div style="height: 100%;">
+    <el-container style="height: 100%;">
       <el-aside width="200px" style="background-color:#324057">
         <el-menu
           default-active="1"
           class="el-menu-vertical-demo"
           background-color="#324057"
+          border="0"
           text-color="#fff"
           active-text-color="#20a0ff"
-          @open="handleOpen"
-          @close="handleClose"
         >
           <el-menu-item ref="indexBtn" index="1" @click="changeToMsite">
             <i class="el-icon-menu"></i>
@@ -19,12 +18,6 @@
             <template slot="title"
               ><i class="el-icon-location"></i>数据管理</template
             >
-            <el-menu-item
-              class="xxx"
-              @click="currentName = 'UserList'"
-              index="2-1"
-              >用户列表</el-menu-item
-            >
             <el-menu-item @click="currentName = 'ShopList'" index="2-2"
               >商家列表</el-menu-item
             >
@@ -33,6 +26,12 @@
             >
             <el-menu-item @click="currentName = 'OrderList'" index="2-4"
               >订单列表</el-menu-item
+            >
+            <el-menu-item
+              class="xxx"
+              @click="currentName = 'UserList'"
+              index="2-1"
+              >用户列表</el-menu-item
             >
           </el-submenu>
           <el-submenu index="3">
@@ -78,6 +77,7 @@
         </el-main>
       </el-container>
     </el-container>
+    
   </div>
 </template>
 
@@ -99,10 +99,10 @@ import DefList from './DefList'
     }
   },
   mounted(){
-    console.log('mounted')
-    setTimeout(()=>{ 
+    // this.$store.commit(GETADMINDATA, {adminInfo: {userName:'admin'}})
+    /*setTimeout(()=>{ 
       this.$store.commit(GETADMINDATA, {adminInfo: {id:67890}})
-    },2000)
+    },2000)*/
   },
   components: {
     UserList,
@@ -118,20 +118,13 @@ import DefList from './DefList'
     changeToMsite(){
       this.currentName="DefList";
     },
-    handleOpen(key, keyPath) {
-
-
-    },
-    handleClose(key, keyPath) {
-
-    },
     changeName(name){
-      if(name === "AddFood"){
-        this.$refs.addFoodBtn.$el.click();
-      }else if(name === "homePage"){
+      if(name === "homePage"){
         this.$refs.indexBtn.$el.click();
+      }else if(name === "AddFood"){
+        this.$refs.addFoodBtn.$el.click();
       }else if(name === "loginPage"){
-        this.$router.replace('/login');
+        this.$router.replace("/login");
       }
     }
   },
@@ -164,5 +157,8 @@ import DefList from './DefList'
 }
 .el-aside {
   color: #333;
+  .el-menu {
+    border-right: 0;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="fillcontain">
     <div class="table_container">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableDataArr" style="width: 100%">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -35,7 +35,7 @@
         <el-table-column label="店铺名称" prop="name"> </el-table-column>
         <el-table-column label="店铺地址" prop="address"> </el-table-column>
         <el-table-column label="店铺介绍" prop="description"> </el-table-column>
-        <el-table-column label="操作" width="400">
+        <el-table-column label="操作" width="400" align="center">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button
@@ -60,7 +60,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-size="20"
+          :page-size="pageSize"
           layout="total, prev, pager, next"
           :total="count"
         >
@@ -116,7 +116,9 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                 offset: 0,
                 limit: 10,
                 count: 0,
+                pageSize: 10,
                 tableData: [],
+                tableDataArr: [],
                 currentPage: 1,
                 selectTable: {},
                 dialogFormVisible: false,
@@ -125,7 +127,6 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
             }
         },
         created(){
-            console.log(this.changeName)
             this.initData();
         },
     	components: {
@@ -135,7 +136,7 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
             async initData(){
                 this.count = 20;
                 try{
-                    this.getResturants();
+                    this.getResturants(); 
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -168,8 +169,10 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                 }
             },
             async getResturants(){
+                const $this = this;
                 const {latitude, longitude} = this.city;
                 const restaurants = await reqShopList();
+                this.tableDataArr = [];
                 this.tableData = [];
                 restaurants.data.forEach(item => {
                     const tableData = {};
@@ -183,14 +186,22 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                     tableData.category = item.category;
                     tableData.image_path = item.image_path;
                     this.tableData.push(tableData);
-                })
+                });
+                this.count = this.tableData.length;
+                //根据当前页码截取相应数据
+                this.tableData.forEach((item, index) => {
+                  if((index > $this.offset || index == $this.offset) && (index < ($this.offset + $this.pageSize))){
+                    $this.tableDataArr.push(item);
+                  }
+                });
+
             },
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.offset = (val - 1)*this.limit;
+                this.offset = (val - 1)*this.pageSize;
                 this.getResturants()
             },
             handleEdit(index, row) {

@@ -2,10 +2,10 @@
   <div class="fillcontain">
     <div class="table_container">
       <el-table
-        :data="tableData"
+        :data="tabDataArr"
         @expand="expand"
-        :expand-row-keys="expendRow"
         :row-key="row => row.index"
+        :expand-row-keys="expendRow"
         style="width: 100%"
       >
         <el-table-column type="expand">
@@ -44,7 +44,7 @@
         <el-table-column label="食品名称" prop="name"> </el-table-column>
         <el-table-column label="食品介绍" prop="description"> </el-table-column>
         <el-table-column label="评分" prop="rating"> </el-table-column>
-        <el-table-column label="操作" width="160">
+        <el-table-column label="操作" width="160" align="center"> 
           <template slot-scope="scope">
             <el-button size="small" @click="handleEdit(scope.row)"
               >编辑</el-button
@@ -63,7 +63,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
-          :page-size="20"
+          :page-size="pageSize"
           layout="total, prev, pager, next"
           :total="count"
         >
@@ -191,9 +191,10 @@ export default {
       restaurant_id: null,
       city: {},
       offset: 0,
-      limit: 20,
+      pageSize: 10,
       count: 0,
       tableData: [],
+      tabDataArr: [],
       currentPage: 1,
       selectTable: {},
       dialogFormVisible: false,
@@ -262,8 +263,10 @@ export default {
       }
     },
     async getFoods() {
+      const $this = this;
       const Foods = await reqFoodList();
       const Resturant = await getResturant();
+      this.tabDataArr = [];
       this.tableData = [];
       Foods.data.forEach((item, index) => {
         const tableData = {};
@@ -289,6 +292,14 @@ export default {
         }
         this.tableData.push(tableData);
       });
+      this.count = this.tableData.length;
+      //根据当前页码截取相应数据
+      this.tableData.forEach((item, index) => {
+        if((index > $this.offset || index == $this.offset) && (index < ($this.offset + $this.pageSize))){
+          $this.tabDataArr.push(item);
+        }
+      });
+
     },
     tableRowClassName(row, index) {
       if (index === 1) {
@@ -313,7 +324,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.offset = (val - 1) * this.limit;
+      this.offset = (val - 1) * this.pageSize;
       this.getFoods();
     },
     expand(row, status) {
@@ -473,7 +484,3 @@ export default {
   display: block;
 }
 </style>
-
-/* import {reqFoodList} from './../../api' export default { data(){ return {
-fooddata:[] } }, async mounted(){ const result = await reqFoodList() if
-(result.code===0) { const data = result.data; this.fooddata = data } } } */
