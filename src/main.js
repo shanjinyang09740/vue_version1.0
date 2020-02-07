@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router/index'
 import store from './store'
 import './mock/mockServer'
+import VueLazyload from 'vue-lazyload'
 import {
   Pagination,
   Dialog,
@@ -159,6 +160,12 @@ Vue.use(Backtop);
 Vue.use(PageHeader);
 Vue.use(CascaderPanel);
 Vue.use(Loading.directive);
+
+Vue.use(VueLazyload, {
+  preLoad: 0.8,
+  attempt: 1,
+  listenEvents: ['scroll']
+});
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

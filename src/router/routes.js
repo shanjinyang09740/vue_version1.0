@@ -4,11 +4,16 @@ import Lytzone from './../page/lytzone.vue'
 import UserProfile from './../page/UserProfile.vue'
 import UserProfile1 from './../page/UserProfile1.vue'
 import UserProfile2 from './../page/UserProfile2.vue'
+import lazyload from './../page/lazyload.vue'
 
 export default [
     {
         path: '/',
         redirect: '/login'
+    },
+    {
+      path: '/lazyload',
+      component: lazyload
     },
     {
         path: '/lytzone',

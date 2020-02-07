@@ -4,6 +4,9 @@
     <el-button>
       <router-link to="/lytzone">路由跳转</router-link>   
     </el-button>
+    <el-button>
+      <router-link to="/lazyload">图片懒加载</router-link>   
+    </el-button>
     <br>
     <div class="tags">
       <el-tag effect="dark">
