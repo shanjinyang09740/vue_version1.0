@@ -69,22 +69,6 @@
           <el-form-item label="食品详情" prop="description">
             <el-input v-model="foodForm.description"></el-input>
           </el-form-item>
-          <el-form-item label="上传食品图片">
-            <el-upload
-              class="avatar-uploader"
-              :action="baseUrl + '/v1/addimg/food'"
-              :show-file-list="false"
-              :on-success="uploadImg"
-              :before-upload="beforeImgUpload"
-            >
-              <img
-                v-if="foodForm.image_path"
-                :src="baseImgPath + foodForm.image_path"
-                class="avatar"
-              />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </el-form-item>
           <el-form-item label="食品特点">
             <el-select
               v-model="foodForm.attributes"
@@ -307,8 +291,6 @@ export default {
       this.showAddCategory = !this.showAddCategory;
     },
     submitcategoryForm(categoryForm) {
-      console.log("111111111111111111111");
-      console.log("111111111111111111111");
       this.$refs[categoryForm].validate(async valid => {
         if (valid) {
           const params = {
@@ -316,6 +298,7 @@ export default {
             description: this.categoryForm.description,
             restaurant_id: this.restaurant_id
           };
+          
           try {
             console.log(params);
             const result = await addCategory(JSON.stringify(params));
@@ -388,8 +371,9 @@ export default {
             category_id: this.selectValue.id,
             restaurant_id: this.restaurant_id
           };
+          console.log(params)
           try {
-            const result = await addFoodReq(params);
+            const result = await addFoodReq(params.name);
             if (result.code == 0) {
               console.log(result);
               this.$message({

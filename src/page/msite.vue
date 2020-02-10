@@ -124,6 +124,7 @@ import DefList from './DefList'
       }else if(name === "AddFood"){
         this.$refs.addFoodBtn.$el.click();
       }else if(name === "loginPage"){
+        sessionStorage.clear()
         this.$router.replace("/login");
       }
     }

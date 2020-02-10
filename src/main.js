@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router/index'
 import store from './store'
 import './mock/mockServer'
-import VueLazyload from 'vue-lazyload'
 import {
   Pagination,
   Dialog,
@@ -161,12 +160,6 @@ Vue.use(PageHeader);
 Vue.use(CascaderPanel);
 Vue.use(Loading.directive);
 
-Vue.use(VueLazyload, {
-  preLoad: 0.8,
-  attempt: 1,
-  listenEvents: ['scroll']
-});
-
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
@@ -174,7 +167,13 @@ Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
-
+import VueLazyload from 'vue-lazyload'
+ 
+Vue.use(VueLazyload, {
+  preLoad: 0.8,  //加载的loading过渡图片
+  attempt: 1    , // 加载图片数量
+  listenEvents: [ 'scroll' ],
+})
 
 Vue.config.productionTip = false
 

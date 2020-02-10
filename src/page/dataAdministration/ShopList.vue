@@ -116,6 +116,7 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                 offset: 0,
                 limit: 10,
                 count: 0,
+				dataList: [],
                 pageSize: 10,
                 tableData: [],
                 tableDataArr: [],
@@ -136,6 +137,8 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
             async initData(){
                 this.count = 20;
                 try{
+					const restaurants = await reqShopList();
+					this.dataList = restaurants["data"];
                     this.getResturants(); 
                 }catch(err){
                     console.log('获取数据失败', err);
@@ -171,10 +174,10 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
             async getResturants(){
                 const $this = this;
                 const {latitude, longitude} = this.city;
-                const restaurants = await reqShopList();
+                // const restaurants = await reqShopList();
                 this.tableDataArr = [];
                 this.tableData = [];
-                restaurants.data.forEach(item => {
+                this.dataList.forEach(item => {
                     const tableData = {};
                     tableData.name = item.name;
                     tableData.address = item.address;
@@ -187,7 +190,7 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                     tableData.image_path = item.image_path;
                     this.tableData.push(tableData);
                 });
-                this.count = this.tableData.length;
+                this.count = this.dataList.length;
                 //根据当前页码截取相应数据
                 this.tableData.forEach((item, index) => {
                   if((index > $this.offset || index == $this.offset) && (index < ($this.offset + $this.pageSize))){
@@ -219,6 +222,7 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                 // this.$router.push({ path: 'addGoods', query: { restaurant_id: row.id }})
             },
             async handleDelete(index, row) {
+				const $this = this;
                 try{
                     const res = await deleteResturant(row.id);
                     if (res.code === 0) {
@@ -226,7 +230,13 @@ import  {SAVE_RESTAURANT_ID} from './../../store/mutation-type'
                             type: 'success',
                             message: '删除店铺成功'
                         });
-                        this.tableData.splice(index, 1);
+                        this.tableDataArr.splice(index, 1);
+						this.dataList.forEach(function(item, index){
+							if(item["id"] === row["id"]){
+								$this.dataList.splice(index, 1);
+							}
+						});
+						this.count--;
                     }else{
                         throw new Error(res.message)
                     }

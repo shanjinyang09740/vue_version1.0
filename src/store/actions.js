@@ -18,6 +18,7 @@ export default {
     if(result.code === 0){
       // 2. 调用mutation，将数据交给mutation
       commit(GETADMINDATA, {adminInfo: result.data})
+
     }
   },
   

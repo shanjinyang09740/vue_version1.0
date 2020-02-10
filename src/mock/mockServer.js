@@ -59,8 +59,63 @@ Mock.mock(RegExp(`${baseUrl}/getmenubyid.*`), 'get', (options) => {
 })
 /* 对食品的操作 */
 Mock.mock(RegExp(`${baseUrl}/addfood.*`), 'post', (options) => {
-  console.log(options)
 
+  const Name = decodeURI(options.body.split('=')[1]);
+  const foodItem = {
+    name:'是吗',
+    "image_path": "16f9d417e2662930.jpg",
+    "activity": {
+      "image_text_color": "f1884f",
+      "icon_color": "f07373",
+      "image_text": "吗， "
+    },
+    "restaurant_id": 3,
+    "category_id": 9306,
+    "item_id": 6213,
+    "tips": "355评价 月售875份",
+    "specfoods": [{
+      "specs_name": "默认",
+      "name": "是吗",
+      "item_id": 6213,
+      "sku_id": 24080,
+      "food_id": 24107,
+      "restaurant_id": 3,
+      "_id": "5e1bf8386901211bf3adab40",
+      "specs": [],
+      "stock": 1000,
+      "checkout_mode": 1,
+      "is_essential": false,
+      "recent_popularity": 698,
+      "sold_out": false,
+      "price": 20,
+      "promotion_stock": -1,
+      "recent_rating": 1.7,
+      "packing_fee": 0,
+      "pinyin_name": "",
+      "original_price": 0
+    }],
+    "satisfy_rate": 94,
+    "satisfy_count": 42,
+    "attributes": [{
+      "icon_color": "f07373",
+      "icon_name": "招牌"
+    }],
+    "is_essential": false,
+    "server_utc": "2019-12-27T06:01:37.107Z",
+    "specifications": [],
+    "rating_count": 355,
+    "month_sales": 875,
+    "description": "",
+    "attrs": [],
+    "display_times": [],
+    "pinyin_name": "",
+    "is_featured": 0,
+    "rating": 4.1,
+    "__v": 0
+  }
+  foodItem.name = Name;
+  foodData.unshift(foodItem)
+  console.log(foodData)
   return {
     code: 0,
     data: 'success'
@@ -80,11 +135,7 @@ Mock.mock(RegExp(`${baseUrl}/deletefood.*`), 'post', (options) => {
     data: 'success'
   }
 })
-
-
 Mock.mock(RegExp(`${baseUrl}/addcategory.*`), 'post', (options) => {
-  console.log(options)
-  console.log("22222222222")
   return {
     code: 0,
     data: 'success'

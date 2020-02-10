@@ -20,6 +20,9 @@ module.exports = {
         'components': resolve('src/components'),
       }
     },
+    externals: {
+      'BMap': 'BMap'
+    }
   },
   css: { // CSS 相关的 loader 传递选项
     loaderOptions: {
