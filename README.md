@@ -1,4 +1,4 @@
-# vueManager
+# kang
 
 ## Project setup
 ```

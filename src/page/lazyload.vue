@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<div class="con">
+		<!-- <div class="con">
 			<el-carousel :interval="4000" type="card" height="200px">
 				<el-carousel-item v-for="item in 6" :key="item">
 					<h3 class="medium">{{ item }}</h3>
 				</el-carousel-item>
 			</el-carousel>
-		</div>
-		<el-divider></el-divider>
+		</div> -->
+		<!-- <el-divider></el-divider> -->
 		<!-- <h2>图片懒加载-elementUI</h2>
    <div class="imageCon">
      <div class="demo-image__lazy">
@@ -71,23 +71,37 @@
 </script>
 
 <style scoped lang="less">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		list-style: none;
+	}
+
 	.con {
-		width: 80%;
+		width: 60%;
 		border: 5px solid #475669;
-		margin: 0 auto
+		margin: 0 auto;
+	}
+
+	h2 {
+		margin: 10px;
 	}
 
 	.imageCon {
-		width: 60%;
-		height: 500px;
+		width: 80%;
+		height: 700px;
 		border: 1px solid #d3dce6;
 		margin: 0 auto;
-		overflow: scroll;
+		overflow: hidden;
+		overflow-y: auto;
+		padding: 5px;
 
 		img {
 			width: 100%;
 			height: 80%;
-			margin: 5px;
 		}
 	}
 
